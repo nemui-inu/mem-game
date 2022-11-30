@@ -145,9 +145,8 @@ void game_exit()
     printf("\"So comes snow after fire, and even dragons have their ending!\""); // 62
     gotoxy(72, 16);
     printf("-- J. R. R. Tolken"); // 18
-    Sleep(3000);
+    Sleep(1500);
     system("cls");
-    system("color F");
 }
 
 void loading(int p)
