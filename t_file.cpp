@@ -7,6 +7,8 @@
 
 #define DEFAULT_SIZE 12
 
+int sessionHighScore;
+
 void newline(int length)
 {
     for (int i = 0; i < length; i++)
@@ -48,25 +50,29 @@ void exit()
 void game()
 {
     char data[][DEFAULT_SIZE] = {
-    "Marimbo", "Fiesta", "Vamos",
-    "Tuxedo", "Palermo", "Green",
-    "Standard", "Implication", "Explicit",
-    "Illicit", "Impressive", "Embargo",
-    "Innuendo", "Error", "Malfunction",
-    "Special", "Astounding", "Jostled",
-    "Shift", "Specimen", "Sigh"
+    "Alpha", "Beta", "Casca",
+    "Delta", "Enma", "Fortune",
+    "Gamma", "Hilda", "India",
+    "Jarhead", "Kelvin", "Lima",
+    "Mission", "Norway", "Opus",
+    "Parry", "Quelling", "Spotlight",
+    "Tankard", "Under", "Vintas",
+    "Wonder", "Xbox", "Zebra"
     };
     size_t dataLength = sizeof data / sizeof *data;
     
     char input[dataLength][DEFAULT_SIZE];
 
-    int prev_points, points = 0, lives = 3, gameLoop = 1, round = 1;
+    int prev_points, points = 0, lives = 3, 
+        gameLoop = 1, round = 1;
 
     srand((unsigned) time(NULL));
-    
+
     while(gameLoop)
     {
         shuffle(data, dataLength);
+
+        printf("Session highest score: %d\n", sessionHighScore);
 
         if(lives != 0)
         {
@@ -87,8 +93,8 @@ void game()
 
             for (int i = 5; i > 0; i--)
             {
-                printf("\r%d seconds before input", i);
-                Sleep(1000);
+                printf("\r%d second(s) before input phase", i);
+                Sleep(1500);
             }
 
             system("cls");
@@ -120,12 +126,25 @@ void game()
                     lives--;
                 }
             }
+            
+            printf("\n\n");
+
+            for (int i = 0; i < 5; i++)
+            {
+                printf("Data [%d]: %s\n", i+1, data[i]);
+            }
+            
+            if (points > sessionHighScore)
+            sessionHighScore = points; 
         }
         else
             break;
         
-        printf("Total points: %d\n", points);
-            
+        printf("\nTotal points: %d\n", points);
+
+        if (points > sessionHighScore)
+        sessionHighScore = points;
+
         if (lives == 0)
         {
             printf("\nG A M E   O V E R");
@@ -143,6 +162,8 @@ void game()
         else
         {
             printf("You win\n");
+            getch();
+            system("cls");
         }
         printf("\n-\n\n");
         round++;
