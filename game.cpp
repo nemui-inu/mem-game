@@ -33,7 +33,7 @@ void cursor(int v)
     }
 }
 
-int main()
+main()
 {
     splash();
 }
@@ -104,21 +104,22 @@ void game_box(int pos_x, int pos_y)
 
 void game_start()
 {
-    int x = 9;
+    int x = 13, y = 5;
     system("cls");
     frame();
     for (int i = 0; i < 3; i++)
     {
-        game_box(x, 3);
-        if (i==1 || i==2)
+        game_box(x, y);
+        if (i>0)
         {
-            game_box(x-18, 8);
+            game_box(x-16, y+5);
         }
         if (i == 2)
-            x += 38;
+            x += 35;
         else
-            x += 36;
+            x += 32;
     }
+    game_box(10, 3);
     getch();
     main_menu();
 }
