@@ -10,6 +10,8 @@ void loading();
 void game_exit();
 void instructions();
 void game_start();
+void statusBar();
+void dataBox();
 void game_box();
 void frame();
 void meshlines();
@@ -21,16 +23,12 @@ void gotoxy(int x, int y)
     c.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
-void cursor(int v)
+void cursor(int isCursorOn)
 {
-    if (v == 0)
-    {
-        printf("\e[?25l");
-    }
-    else
-    {
+    if (isCursorOn)
         printf("\e[?25h");
-    }
+    else
+        printf("\e[?25l");
 }
 
 main()
@@ -38,15 +36,15 @@ main()
     splash();
 }
 
-void barlines(int z)
+void barlines(int barLength)
 {
-    for (int i = 0; i < z; i++)
+    for (int i = 0; i < barLength; i++)
         printf("\xDB");
 }
 
-void meshlines(int a)
+void meshlines(int meshLength)
 {
-    for (int i = 0; i < a; i++)
+    for (int i = 0; i < meshLength; i++)
         printf("\xB2");
 }
 
@@ -73,15 +71,15 @@ void frame() // 116x28
     barlines(116);
 }
 
-void game_box(int pos_x, int pos_y)
+void game_box(int pos_x, int pos_y, int width, int height)
 {
-    // width=27, length= 3
+    // width=27, length= 2
     gotoxy(pos_x, pos_y);        // 9, 3
     printf("\xDA");              // upper-left corner
-    for (int i = 0; i < 27; i++) // upper line
+    for (int i = 0; i < width; i++) // upper line //27
         printf("\xC4");
     printf("\xBF");             // upper-right corner
-    for (int i = 0; i < 2; i++) // left-hand side
+    for (int i = 0; i < height; i++) // left-hand side //2
     {
         if (i == 0)
             pos_y++;
@@ -91,35 +89,62 @@ void game_box(int pos_x, int pos_y)
     }
     gotoxy(pos_x, pos_y);
     printf("\xC0");              // bottom-left corner
-    for (int i = 0; i < 27; i++) // bottom line
+    for (int i = 0; i < width; i++) // bottom line // 27
         printf("\xC4");
     printf("\xD9");             // bottom-right corner
-    for (int i = 0; i < 2; i++) // right-hand side
+    for (int i = 0; i < height; i++) // right-hand side //2
     {
-        gotoxy((pos_x + 28), pos_y - 2);
+        gotoxy((pos_x + width+1), pos_y - height); //28 //2
         printf("\xB3");
         pos_y++;
     }
 }
 
-void game_start()
+void dataBox(int pos_x, int pos_y) // 104x11 //+105, -11
 {
-    int x = 13, y = 5;
-    system("cls");
-    frame();
+    // upper portion
+
+    game_box(7, 3, 104, 2);
+    
+    // middle portion
+
+    game_box(7, 7, 104, 11); // big box
+     
+    int x = 13, y = 9;
+
     for (int i = 0; i < 3; i++)
     {
-        game_box(x, y);
+        game_box(x, y, 27, 2);
         if (i>0)
         {
-            game_box(x-16, y+5);
+            game_box(x-16, y+5, 27, 2);
         }
         if (i == 2)
             x += 35;
         else
             x += 32;
     }
-    game_box(10, 3);
+
+    // bottom portion
+
+    game_box((7), 20, 104/4-3, 5);
+    game_box((7+104/4), 20, 104/2, 1);
+    game_box((7+104/4), 23, 104/2, 2);
+    game_box((7+104/4+104/2)+3, 20, 104/4-3, 5);
+}
+
+void statusBar()
+{
+    gotoxy(35, 21);
+    printf("Lives: \x03 \x03 \x03");
+}
+
+void game_start()
+{
+    system("cls");
+    frame();
+    dataBox(7, 6);
+    statusBar();
     getch();
     main_menu();
 }
