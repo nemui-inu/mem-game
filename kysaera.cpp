@@ -372,7 +372,7 @@ void game()
                         gotoxy(104 - 16 + 2, 23);
                         flush(20);
                         gotoxy(104 - 16 + 12, 23);
-                        printf("+\x03\n");
+                        printf("+\x03");
                     }
                 }
                 else
