@@ -7,22 +7,51 @@
 
 #define DEFAULT_SIZE 12
 
-int sessionHighScore;
+void menu();
+void splash();
+void loading();
+void instructions();
+void exit();
+void game();
+void shuffle();
+void databox();
+void gamebox();
+void frame();
+void barlines();
+void meshlines();
+void showData();
+void flushData();
+void flush();
+bool fpoints();
 
-void gotoxy(int x, int y)
+// for setting cursor to terminal coordinates
+
+void gotoxy(int x, int y) 
 {
     COORD c;
     c.X = x;
     c.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
-void cursor(int isCursorOn)
+
+// cursor behavior
+
+void hideCursor()
 {
-    if (isCursorOn)
-        printf("\e[?25h");
-    else
-        printf("\e[?25l");
+   HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+   CONSOLE_CURSOR_INFO info;
+   info.dwSize = 100;
+   info.bVisible = FALSE;
+   SetConsoleCursorInfo(consoleHandle, &info);
 }
+
+int main()
+{
+    hideCursor();
+    splash();
+}
+
+// for refreshing text instead of "\r"
 
 void flush(int numberOfCharacters)
 {
@@ -70,13 +99,21 @@ void showData(char data[][DEFAULT_SIZE])
     }
 }
 
+// simple bars and boxes using ASCII characters
+
+void meshlines(int meshLength)
+{
+    for (int i = 0; i < meshLength; i++)
+        printf("\xB2");
+}
+
 void barlines(int barLength)
 {
     for (int i = 0; i < barLength; i++)
         printf("\xDB");
 }
 
-void frame() // 116x28
+void frame()
 {
     gotoxy(2, 1);
     barlines(116);
@@ -101,13 +138,16 @@ void frame() // 116x28
 
 void game_box(int pos_x, int pos_y, int width, int height)
 {
-    // width=27, length= 2
-    gotoxy(pos_x, pos_y);        // 9, 3
-    printf("\xDA");              // upper-left corner
-    for (int i = 0; i < width; i++) // upper line //27
+    // upper-left corner
+    gotoxy(pos_x, pos_y);       
+    printf("\xDA");
+    // upper line              
+    for (int i = 0; i < width; i++) 
         printf("\xC4");
-    printf("\xBF");             // upper-right corner
-    for (int i = 0; i < height; i++) // left-hand side //2
+    // upper-right corner
+    printf("\xBF");             
+    // left-hand side 
+    for (int i = 0; i < height; i++) 
     {
         if (i == 0)
             pos_y++;
@@ -115,31 +155,31 @@ void game_box(int pos_x, int pos_y, int width, int height)
         printf("\xB3");
         ++pos_y;
     }
+    // bottom-left corner
     gotoxy(pos_x, pos_y);
-    printf("\xC0");              // bottom-left corner
-    for (int i = 0; i < width; i++) // bottom line // 27
+    printf("\xC0");              
+    // bottom line
+    for (int i = 0; i < width; i++) 
         printf("\xC4");
-    printf("\xD9");             // bottom-right corner
-    for (int i = 0; i < height; i++) // right-hand side //2
+    // bottom-right corner
+    printf("\xD9");
+    // right-hand side             
+    for (int i = 0; i < height; i++) 
     {
-        gotoxy((pos_x + width+1), pos_y - height); //28 //2
+        gotoxy((pos_x + width+1), pos_y - height);
         printf("\xB3");
         pos_y++;
     }
 }
 
-void dataBox(int pos_x, int pos_y) // 104x11 //+105, -11
+void dataBox(int pos_x, int pos_y)
 {
     // upper portion
-
     game_box(7, 3, 104, 2);
     
-    // middle portion
-
-    game_box(7, 7, 104, 11); // big box
-     
+    //middle portion
+    game_box(7, 7, 104, 11); 
     int x = 13, y = 9;
-
     for (int i = 0; i < 3; i++)
     {
         game_box(x, y, 27, 2);
@@ -154,12 +194,13 @@ void dataBox(int pos_x, int pos_y) // 104x11 //+105, -11
     }
 
     // bottom portion
-
     game_box((7), 20, 104/4-3, 5);
     game_box((7+104/4), 20, 104/2, 1);
     game_box((7+104/4), 23, 104/2, 2);
     game_box((7+104/4+104/2)+3, 20, 104/4-3, 5);
 }
+
+// modern fisher-yates shuffle for data
 
 void shuffle(char data[][DEFAULT_SIZE], size_t length)
 {
@@ -173,6 +214,8 @@ void shuffle(char data[][DEFAULT_SIZE], size_t length)
         strcpy(data[length], target[0]);
     }
 }
+
+// bool for points (int)
 
 bool fpoints(char data[][DEFAULT_SIZE], char input[][DEFAULT_SIZE], int index)
 {
@@ -188,24 +231,15 @@ bool fpoints(char data[][DEFAULT_SIZE], char input[][DEFAULT_SIZE], int index)
         return FALSE;
 }
 
-void exit()
-{
-    system("cls");
-    frame();
-    gotoxy(47, 15);
-    system("cls");
-    frame();
-    gotoxy(28, 13);                                                              // 116x28
-    printf("\"So comes snow after fire, and even dragons have their ending!\""); // 62
-    gotoxy(72, 16);
-    printf("-- J. R. R. Tolken"); // 18
-    Sleep(3000);
-    system("cls");
-    return;
-}
+// game code proper
+
+int sessionHighScore;
 
 void game()
 {
+    system("cls");
+    
+    // 7893600 permutations  
     char data[][DEFAULT_SIZE] = {
         "Alpha", "Beta", "Casca",
         "Delta", "Enma", "Fortune",
@@ -220,11 +254,12 @@ void game()
 
     int prev_points, points = 0, lives = 3, round = 1;
 
-    
+    // clock for random number
     srand((unsigned)time(NULL));
 
     while (1)
     {
+        // refresh input data every loop
         char input[dataLength][DEFAULT_SIZE] = {
             " ", " ", " ", " ", " "};
 
@@ -233,12 +268,11 @@ void game()
         
         shuffle(data, dataLength);
 
-        gotoxy(9, 5);
-        printf("Session highest score: %d\n", sessionHighScore);
-
         if (lives != 0)
         {
             prev_points = points;
+            gotoxy(9, 5);
+            printf("Session highest score: %d\n", sessionHighScore);
             gotoxy(((104-7)/2)+7, 5);
             printf("Round: %d", round);
             gotoxy(9, 22);
@@ -249,9 +283,11 @@ void game()
             printf("Lives:");
             for (int n = 0; n < lives; n++)
             {
+                 // heart
                  printf(" \x03"); 
             }
 
+            flushData();
             showData(data);
 
             for (int i = 5; i >= 0 ; i--)
@@ -271,17 +307,18 @@ void game()
 
             flushData();
 
-
             for (int i = 0; i < 5; i++)
             {
+                // double guard for immediate terminate input when life hits 0
                 if (lives < 1)
                     break;
                 gotoxy((7+104/4)+2, 25);
-                flush(20);
+                flush(50);
                 gotoxy((7+104/4)+2, 25);
                 printf("Input[%d]: ", i + 1);
                 scanf("%s", &input[i]);
                 
+                // show input on boxes
                 for (int i = 0; i < 5; i++)
                 {
                     switch(i)
@@ -302,14 +339,14 @@ void game()
                             gotoxy(17+(32)-(16), 10+5);
                             break;
                     }
-                    printf("%s", input[i]);
+                    printf("%.12s", input[i]);
                 }
 
                 if (fpoints(data, input, i))
                 {
                     points++;
 
-                    if (lives < 6)
+                    if (lives < 5)
                     {
                         lives++;
                         gotoxy(104-16+2, 23);
@@ -346,19 +383,15 @@ void game()
                 gotoxy(9, 22);
                 printf("Total points: %d\n", points);
             }
-
             flushData();
             showData(data);
-            flushData();
-
         }
-        
         if (points > sessionHighScore)
             sessionHighScore = points;
-
-
         if (lives == 0)
         {
+            flushData();
+            showData(data);            
             gotoxy((7+104/4)+2, 21);
             flush(30);
             gotoxy((7+104/4)+((52-17)/2), 21);            
@@ -370,7 +403,7 @@ void game()
 
             if (getch() == 'q')
             {
-                exit();
+                menu();
                 break;
             }
             else
@@ -391,10 +424,89 @@ void game()
         round++;
     }
     return;
-    getch();
 }
 
-main()
+void exit()
 {
-    game();
+    system("cls");
+    frame();
+    gotoxy(47, 15);
+    system("cls");
+    frame();
+    gotoxy(28, 13);                                                              // 116x28
+    printf("\"So comes snow after fire, and even dragons have their ending!\""); // 62
+    gotoxy(72, 16);
+    printf("-- J. R. R. Tolken"); // 18
+    Sleep(3000);
+    system("cls");
+    return;
+}
+
+void instructions()
+{
+    system("cls");
+    frame();
+    getch();
+    menu();
+}
+
+void loading(int loadingBarLength)
+{
+    int loaderDelay = 200;
+
+    for (int i = 0; i < loadingBarLength; i++)
+    {
+        printf("\xDB");
+        Sleep(loaderDelay);
+        if (loaderDelay > 0)
+            loaderDelay -= 20;
+    }
+}
+
+void splash()
+{
+    system("cls");
+    system("color 3");
+    frame();
+    gotoxy(45, 13);
+    printf("*** KYSAERA SPLASH ART ***"); // 26
+    gotoxy(48, 14);
+    printf("\"Memories of a Poet\""); // 20
+    gotoxy(44, 20);
+    loading(28);
+    gotoxy(44, 22);
+    printf("Press any key to continue..."); // 28
+    getch();
+    menu();
+}
+
+void menu()
+{
+    system("cls");
+    system("color 3");
+    frame();
+    gotoxy(25, 11);
+    meshlines(10);
+    printf(" 1. Start");
+    gotoxy(25, 14);
+    meshlines(10);
+    printf(" 2. Instructions");
+    gotoxy(25, 17);
+    meshlines(10);
+    printf(" 3. Exit");
+
+    switch (getch())
+    {
+    case '1':
+        game();
+        break;
+    case '2':
+        instructions();
+        break;
+    case '3':
+        exit();
+        break;
+    default:
+        menu();
+    }    
 }
