@@ -14,15 +14,15 @@ void instructions();
 void exit();
 void game();
 void shuffle();
-void databox();
-void gamebox();
+void data_box();
+void game_box();
 void frame();
-void barlines();
-void meshlines();
-void showData();
-void flushData();
+void bar_lines();
+void mesh_lines();
+void show_data();
+void flush_data();
 void flush();
-bool fpoints();
+bool function_points();
 
 // for setting cursor to terminal coordinates
 
@@ -36,7 +36,7 @@ void gotoxy(int x, int y)
 
 // cursor behavior
 
-void hideCursor()
+void hide_cursor()
 {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO info;
@@ -47,19 +47,18 @@ void hideCursor()
 
 int main()
 {
-    hideCursor();
     splash();
 }
 
 // for refreshing text instead of "\r"
 
-void flush(int numberOfCharacters)
+void flush(int char_count)
 {
-    for (int i = 0; i < numberOfCharacters; i++)
+    for (int i = 0; i < char_count; i++)
         printf(" ");
 }
 
-void flushData()
+void flush_data()
 {
     gotoxy(17, 10);
     flush(12);
@@ -73,7 +72,7 @@ void flushData()
     flush(12);
 }
 
-void showData(char data[][DEFAULT_SIZE])
+void show_data(char data[][DEFAULT_SIZE])
 {
     for (int i = 0; i < 5; i++)
     {
@@ -101,22 +100,22 @@ void showData(char data[][DEFAULT_SIZE])
 
 // simple bars and boxes using ASCII characters
 
-void meshlines(int meshLength)
+void mesh_lines(int mesh_length)
 {
-    for (int i = 0; i < meshLength; i++)
+    for (int i = 0; i < mesh_length; i++)
         printf("\xB2");
 }
 
-void barlines(int barLength)
+void bar_lines(int bar_length)
 {
-    for (int i = 0; i < barLength; i++)
+    for (int i = 0; i < bar_length; i++)
         printf("\xDB");
 }
 
 void frame()
 {
     gotoxy(2, 1);
-    barlines(116);
+    bar_lines(116);
     for (int i = 2; i < 28; i++)
     {
         gotoxy(2, i);
@@ -133,10 +132,10 @@ void frame()
         printf("\xDB");
     }
     gotoxy(2, 28);
-    barlines(116);
+    bar_lines(116);
 }
 
-void gamebox(int pos_x, int pos_y, int width, int height)
+void game_box(int pos_x, int pos_y, int width, int height)
 {
     // upper-left corner
     gotoxy(pos_x, pos_y);
@@ -172,20 +171,20 @@ void gamebox(int pos_x, int pos_y, int width, int height)
     }
 }
 
-void dataBox(int pos_x, int pos_y)
+void data_box(int pos_x, int pos_y)
 {
     // upper portion
-    gamebox(7, 3, 104, 2);
+    game_box(7, 3, 104, 2);
 
     // middle portion
-    gamebox(7, 7, 104, 11);
+    game_box(7, 7, 104, 11);
     int x = 13, y = 9;
     for (int i = 0; i < 3; i++)
     {
-        gamebox(x, y, 27, 2);
+        game_box(x, y, 27, 2);
         if (i > 0)
         {
-            gamebox(x - 16, y + 5, 27, 2);
+            game_box(x - 16, y + 5, 27, 2);
         }
         if (i == 2)
             x += 35;
@@ -194,30 +193,30 @@ void dataBox(int pos_x, int pos_y)
     }
 
     // bottom portion
-    gamebox((7), 20, 104 / 4 - 3, 5);
-    gamebox((7 + 104 / 4), 20, 104 / 2, 1);
-    gamebox((7 + 104 / 4), 23, 104 / 2, 2);
-    gamebox((7 + 104 / 4 + 104 / 2) + 3, 20, 104 / 4 - 3, 5);
+    game_box((7), 20, 104 / 4 - 3, 5);
+    game_box((7 + 104 / 4), 20, 104 / 2, 1);
+    game_box((7 + 104 / 4), 23, 104 / 2, 2);
+    game_box((7 + 104 / 4 + 104 / 2) + 3, 20, 104 / 4 - 3, 5);
 }
 
-// modern fisher-yates shuffle for data
+// fisher-yates shuffle for data
 
 void shuffle(char data[][DEFAULT_SIZE], size_t length)
 {
-    char target[1][DEFAULT_SIZE];
+    char temp[1][DEFAULT_SIZE];
 
     while (length > 1)
     {
-        size_t newLength = rand() % (length--);
-        strcpy(target[0], data[newLength]);
-        strcpy(data[newLength], data[length]);
-        strcpy(data[length], target[0]);
+        size_t new_length = rand() % (length--);
+        strcpy(temp[0], data[new_length]);
+        strcpy(data[new_length], data[length]);
+        strcpy(data[length], temp[0]);
     }
 }
 
 // bool for points (int)
 
-bool fpoints(char data[][DEFAULT_SIZE], char input[][DEFAULT_SIZE], int index)
+bool function_points(char data[][DEFAULT_SIZE], char input[][DEFAULT_SIZE], int index)
 {
     if (strcmp(data[index], input[index]) == 0)
     {
@@ -233,7 +232,7 @@ bool fpoints(char data[][DEFAULT_SIZE], char input[][DEFAULT_SIZE], int index)
 
 // game code proper
 
-int sessionHighScore;
+int session_high_score;
 
 void game()
 {
@@ -245,7 +244,7 @@ void game()
     printf("\"Press any key to begin...\"");
     getch();
 
-    // 7893600 permutations
+    // 7,893,600 permutations
     char data[][DEFAULT_SIZE] = {
         "Alpha", "Beta", "Casca",
         "Delta", "Enma", "Fortune",
@@ -256,10 +255,10 @@ void game()
         "Tankard", "Under", "Vintas",
         "Wonder", "Xenon", "Zebra"};
 
-    size_t dataLength = sizeof data / sizeof *data;
+    size_t data_length = sizeof data / sizeof *data;
 
-    int points = 0, lives = 3, maxLives = 3, round = 1,
-        pointStreak = 0, streakCounter = 0;
+    int points = 0, lives = 3, max_lives = 3, round = 1,
+        point_streak = 0, streak_counter = 0;
 
     // clock for random number
     srand((unsigned)time(NULL));
@@ -269,22 +268,22 @@ void game()
         system("color 3");
 
         // refresh input data every loop
-        char input[dataLength][DEFAULT_SIZE] = {
+        char input[data_length][DEFAULT_SIZE] = {
             " ", " ", " ", " ", " "};
 
         frame();
-        dataBox(7, 6);
+        data_box(7, 6);
 
-        shuffle(data, dataLength);
+        shuffle(data, data_length);
         
         if (lives != 0)
         {   
             gotoxy(9, 24);
             flush(20);
             gotoxy(9, 24);
-            printf("Combo: %d", streakCounter);                 
+            printf("Combo: %d", streak_counter);                 
             gotoxy(9, 5);
-            printf("Session highest score: %d\n", sessionHighScore);
+            printf("Session highest score: %d\n", session_high_score);
             gotoxy(((104 - 7) / 2) + 7, 5);
             printf("Round: %d", round);
             gotoxy(9, 22);
@@ -301,8 +300,8 @@ void game()
                 printf(" \x03");
             }
 
-            flushData();
-            showData(data);
+            flush_data();
+            show_data(data);
 
             for (int i = 5; i >= 0; i--)
             {
@@ -321,11 +320,11 @@ void game()
             gotoxy(104 - 16 + 7, 23);
             printf("INPUT PHASE ");
 
-            flushData();
+            flush_data();
 
             for (int i = 0; i < 5; i++)
             {
-                // double guard for immediate terminate input when life hits 0
+                // guard to immediately terminate input phase if life hits 0
                 if (lives < 1)
                     break;
                 
@@ -359,14 +358,14 @@ void game()
                     printf("%d. %.12s", i + 1, input[i]);
                 }
 
-                if (fpoints(data, input, i))
+                if (function_points(data, input, i))
                 {
                     system("color B");
 
                     points += 5;
-                    pointStreak += 5;
+                    point_streak += 5;
 
-                    if (lives < maxLives)
+                    if (lives < max_lives)
                     {
                         lives++;
                         gotoxy(104 - 16 + 2, 23);
@@ -399,40 +398,40 @@ void game()
 
             }
 
-            // for streak/combo count
-            if (pointStreak == 25)
-                streakCounter++;
+            // watches out for a streak
+            if (point_streak == 25)
+                streak_counter++;
             else
-                streakCounter = 0;
+                streak_counter = 0;
         
-            pointStreak = 0;
+            point_streak = 0;
             gotoxy(9, 24);
             flush(20);
             gotoxy(9, 24);
-            printf("Combo: %d", streakCounter);
+            printf("Combo: %d", streak_counter);
 
-            // streak/combo bonus
-            if (streakCounter > 1)
+            // streak bonus
+            if (streak_counter > 1)
             {
                 gotoxy(9, 24);
                 printf("STREAK!! (X2)");
                 gotoxy(9, 25);
                 printf("MAX LIVES UP");
-                maxLives++;
+                max_lives++;
                 points *= 2;
             }
 
-            flushData();
-            showData(data);
+            flush_data();
+            show_data(data);
         }
 
-        if (points > sessionHighScore)
-            sessionHighScore = points;
+        if (points > session_high_score)
+            session_high_score = points;
         if (lives == 0)
         {
             system("color 4");
-            flushData();
-            showData(data);
+            flush_data();
+            show_data(data);
             gotoxy((7 + 104 / 4) + 2, 21);
             flush(30);
             gotoxy((7 + 104 / 4) + ((52 - 17) / 2), 21);
@@ -524,21 +523,23 @@ void instructions()
     menu();
 }
 
-void loading(int loadingBarLength)
+// pseudo loading bar for show
+void loading(int load_bar_length)
 {
-    int loaderDelay = 200;
+    int load_delay = 200;
 
-    for (int i = 0; i < loadingBarLength; i++)
+    for (int i = 0; i < load_bar_length; i++)
     {
         printf("\xDB");
-        Sleep(loaderDelay);
-        if (loaderDelay > 0)
-            loaderDelay -= 20;
+        Sleep(load_delay);
+        if (load_delay > 0)
+            load_delay -= 20;
     }
 }
 
 void splash()
 {
+    hide_cursor();
     system("cls");
     system("color 3");
     frame();
@@ -564,13 +565,13 @@ void menu()
     system("color 3");
     frame();
     gotoxy(25, 11);
-    meshlines(10);
+    mesh_lines(10);
     printf(" 1. Start");
     gotoxy(25, 14);
-    meshlines(10);
+    mesh_lines(10);
     printf(" 2. Instructions");
     gotoxy(25, 17);
-    meshlines(10);
+    mesh_lines(10);
     printf(" 3. Exit");
 
     switch (getch())
