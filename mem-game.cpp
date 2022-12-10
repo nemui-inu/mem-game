@@ -9,6 +9,7 @@
 
 void menu();
 void splash();
+void title();
 void loading();
 void instructions();
 void exit();
@@ -47,7 +48,7 @@ void hide_cursor()
 
 int main()
 {
-    splash();
+    title();
 }
 
 // for refreshing text instead of "\r"
@@ -535,6 +536,125 @@ void loading(int load_bar_length)
         if (load_delay > 0)
             load_delay -= 20;
     }
+}
+
+void letter_box(int start_pos_x, int start_pos_y)
+{        
+        // box
+        int x = start_pos_x, y = start_pos_y;
+
+        // 7 units^2 per box
+        int char_scale = 7; 
+
+        for(int i = 0; i < 9; i++)
+        {
+            if (i < 3 || i > 4)
+            {
+                for (int i = 0; i < char_scale * 4; i++)
+                {
+                    if (i < char_scale)
+                    {
+                        gotoxy(x, y);
+                        printf("\xDB");
+                        if (i != char_scale - 1) x++;
+                    }
+                    if (i >= char_scale && i < char_scale * 2)
+                    {
+                        gotoxy(x, y);
+                        printf("\xDB");
+                        if (i != (char_scale * 2) - 1) ++y;
+                    }
+                    if (i >= char_scale * 2 && i < char_scale * 3)
+                    {
+                        gotoxy(x, y);
+                        printf("\xDB");
+                        if (i != (char_scale * 3) - 1) --x;
+                    }
+                    if (i >= char_scale * 3 && i < char_scale * 4)
+                    {
+                        gotoxy(x, y);
+                        printf("\xDB");
+                        if (i != (char_scale * 4) - 1) --y;
+                    }
+                }
+                x += char_scale;
+            }
+            else
+            {
+                x += char_scale - 4;
+            }
+        }
+        // -- box --
+
+        // deets
+        {
+            int x = start_pos_x, y = start_pos_y;
+            
+            // --- letter 'm' --- //
+
+            x += 2; y += 5;
+            
+            for (int i = 0; i < 4; i++)
+            {
+                gotoxy(x, y);
+                printf("\xDB");
+                y--;
+            }
+
+            x += 2; y += 4;
+            
+            for (int i = 0; i < 4; i++)
+            {
+                gotoxy(x, y);
+                printf("\xDB");
+                y--;
+            }
+
+            // ------------------- //
+
+            x = start_pos_x + char_scale, y = start_pos_y;
+            
+            // --- letter 'e' --- //
+            
+            x += 7; y += 2;
+            
+            for (int i = 0; i < 5; i++)
+            {
+                gotoxy(x, y);
+                printf("\xDB");
+                x--;
+            }
+
+            x += 5; y ++;
+
+            for (int i = 0; i < 2; i++)
+            {
+                gotoxy(x, y);
+                printf("\xDB");
+                x--;
+            }
+
+            x += 2; y ++;
+
+            for (int i = 0; i < 5; i++)
+            {
+                gotoxy(x, y);
+                printf("\xDB");
+                x--;
+            }
+
+        }
+                
+        // -- deets -- 
+
+    getch();
+}
+
+void title()
+{
+    system("color 3");
+    frame();
+    letter_box(10, 10);
 }
 
 void splash()
