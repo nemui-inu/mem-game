@@ -21,4 +21,4 @@ The game consists of two phases:
 
 ### Points and Life System
 
-  Five (5) points will be given when the player enters a correct word (case, spelling, and order). When player the scores atleast two (2) consecutive perfect scores, the current score will be doubled. The player starts with three (3) max lives (:white_heart:). It will deduct (-:white_heart:) for a every wrong input and will reward the player (+:white_heart:) for every correct input. As the player scores consecutive perfect scores (25 points), the maximum life limit is increased.
+  Five (5) points will be given when the player enters a correct word (case, spelling, and order). When player the scores atleast two (2) consecutive perfect scores, the current score will be doubled. The player starts with three (3) max lives (:white_heart:). It will deduct (-:white_heart:) for every wrong input and will reward the player (+:white_heart:) for every correct input. As the player scores consecutive perfect scores (25 points), the maximum life limit is increased.
