@@ -55,20 +55,20 @@ The game proper is subdivided into two phases:
 
 ### 1. Memorize Phase
 
-Upon starting the game from the menu, the player must memorize the words enclosed within boxes for five (5) seconds before it disappears.
+Upon starting the game from the menu, the player must `memorize` the words enclosed within boxes for `5 seconds` before it disappears.
 
 ### 2. Input Phase
 
-The player will then input the missing words in correct order, spelling, and case.
+The player will then input the missing words in `correct order, spelling, and case`.
 
 ### Points and Life System
 
-If the player inputs a word in correct order, spelling, and case, this is called a `correct word` and will reward the player five (`5`) points.
+If the player inputs a word in correct order, spelling, and case, this is called a `correct word`. This will reward the player `5 points` and a single life (+:white_heart:), not exceeding the maximum life.
 
-Otherwise, it is considered a `wrong word` and will deduct a :white_heart:.
+Otherwise, it is considered a `wrong word` and will `deduct a single life` (-:white_heart:).
 
-The player starts with three (`3`) maximum lives (`:white_heart: :white_heart: :white_heart:`).
+The player starts with `3 maximum lives` (:white_heart: :white_heart: :white_heart:).
 
-If the player inputs five (`5`) consecutive `correct words`, this is considered a `perfect round`.
+If the player inputs five `5 consecutive correct words`, this is considered a `perfect round`.
 
-If the player scores consecutive `perfect round`s, this is called a `streak` and will `double` the current score and increase the maximum lives that could be earned (`max :white_heart:+`).
+If the player scores consecutive `perfect rounds`, this is called a `streak` and will `double the current score` and `increase the maximum lives` that could be earned (max :white_heart:+).
