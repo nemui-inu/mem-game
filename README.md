@@ -47,7 +47,7 @@ All of which are learned from CS 1101 Laboratory B — Computer Programming I.
 
 ![image](https://user-images.githubusercontent.com/107972883/206702189-e86cdde2-2846-4896-b69d-08fd4608abcc.png)
 
-## How-to Play
+## How to Play
 
 The game menu is navigated using `number keys`.
 
@@ -63,7 +63,7 @@ The player will then input the missing words in `correct order, spelling, and ca
 
 ### Points and Life System
 
-If the player inputs a word in correct order, spelling, and case, this is called a `correct word`. This will reward the player `5 points` and a single life (+:white_heart:), not exceeding the maximum life.
+If the player inputs a word in correct order, spelling, and case, this is called a `correct word`. This will reward the player `5 points` and a `single life` (+:white_heart:), not exceeding the maximum life.
 
 Otherwise, it is considered a `wrong word` and will `deduct a single life` (-:white_heart:).
 
