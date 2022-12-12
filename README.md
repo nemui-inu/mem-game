@@ -59,7 +59,7 @@ Upon starting the game from the menu, the player must `memorize` the words enclo
 
 ### 2. Input Phase
 
-The player will then input the missing words in `correct order, spelling, and case`.
+The player will then `input` the missing words in correct order, spelling, and case.
 
 ### Points and Life System
 
