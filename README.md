@@ -1,5 +1,43 @@
 # mem-game
-A memory game written in C.
+
+## Description
+
+A simple memory game written in C.
+
+## Installation
+
+First, clone the repository using:
+
+```
+git clone https://github.com/nemui-inu/mem-game.git
+```
+
+Then navigate to the game folder and run the `mem-game.exe` file.
+
+## Project Structure
+
+The project consists of the following files.
+
+```
+PROJECT_ROOT
+├── mem-game.cpp               
+└── mem-game.exe               
+```
+
+## Scope
+
+The project utilized the following C components: 
+
+-	Input, Output
+-	Arithmetic Operations
+-	Conditional Statements
+-	Loops
+-	Functions
+-	Strings, Arrays
+
+All of which are learned from CS 1101 Laboratory B — Computer Programming I.
+
+## Screenshots
 
 ![image](https://user-images.githubusercontent.com/107972883/206701746-4a037c41-4217-471d-8532-d930735b3d55.png)
 
@@ -9,16 +47,28 @@ A memory game written in C.
 
 ![image](https://user-images.githubusercontent.com/107972883/206702189-e86cdde2-2846-4896-b69d-08fd4608abcc.png)
 
-# game-instructions
+## How-to Play
 
-The game consists of two phases:
+The game menu is navigated using `number keys`.
+
+The game proper is subdivided into two phases:
 
 ### 1. Memorize Phase
 
-  During this phase, you will memorize the five (5) random words presented on screen. After five (5) seconds, the words will then disappear and you will enter the next phase.
+Upon starting the game from the menu, the player must memorize the words enclosed within boxes for five (5) seconds before it disappears.
+
 ### 2. Input Phase
-  During this phase, you will fill in the missing words within the boxes in correct spelling, case and order. As you enter your input, corresponding points and lives will be given.
+
+The player will then input the missing words in correct order, spelling, and case.
 
 ### Points and Life System
 
-  Five (5) points will be given when the player enters a correct word (case, spelling, and order). When player the scores atleast two (2) consecutive perfect scores, the current score will be doubled. The player starts with three (3) max lives (:white_heart:). It will deduct (-:white_heart:) for every wrong input and will reward the player (+:white_heart:) for every correct input. As the player scores consecutive perfect scores (25 points), the maximum life limit is increased.
+If the player inputs a word in correct order, spelling, and case, this is called a `correct word` and will reward the player five (`5`) points.
+
+Otherwise, it is considered a `wrong word` and will deduct a :white_heart:.
+
+The player starts with three (`3`) maximum lives (`:white_heart: :white_heart: :white_heart:`).
+
+If the player inputs five (`5`) consecutive `correct words`, this is considered a `perfect round`.
+
+If the player scores consecutive `perfect round`s, this is called a `streak` and will `double` the current score and increase the maximum lives that could be earned (`max :white_heart:+`).
