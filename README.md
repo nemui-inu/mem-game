@@ -37,6 +37,10 @@ The project utilized the following C components:
 
 All of which are learned from CS 1101 Laboratory B — Computer Programming I.
 
+## Importance to end-user/s
+
+Mem-game could provide entartainment for its users. The memorization involved in-game could also train the brain to memorize five words at once, instead of the usual three.
+
 ## Screenshots
 
 ![image](https://user-images.githubusercontent.com/107972883/206701746-4a037c41-4217-471d-8532-d930735b3d55.png)
