@@ -9,20 +9,21 @@
 
 void menu();
 void splash();
-void loading();
+void loading(int load_bar_length);
 void instructions();
 void exit();
 void game();
-void shuffle();
-void data_box();
-void game_box();
+void shuffle(char data[][DEFAULT_SIZE], size_t length);
+void data_box(int pos_x, int pos_y);
+void game_box(int pos_x, int pos_y, int width, int height);
 void frame();
-void bar_lines();
-void mesh_lines();
-void show_data();
+void bar_lines(int bar_length);
+void mesh_lines(int mesh_length);
+void show_data(char data[][DEFAULT_SIZE]);
 void flush_data();
-void flush();
-bool function_points();
+void flush(int char_count);
+bool function_points(char data[][DEFAULT_SIZE], char input[][DEFAULT_SIZE], int index);
+
 
 // for setting cursor to terminal coordinates
 
