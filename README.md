@@ -4,14 +4,6 @@
 
 A simple memory game written in C.
 
-## Installation
-
-First, clone the repository using:
-
-```
-git clone https://github.com/nemui-inu/mem-game.git
-```
-
 Then navigate to the game folder and run the `mem-game.exe` file.
 
 ## Project Structure
